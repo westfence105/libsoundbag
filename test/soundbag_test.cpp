@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "soundbag.hpp"
+#include "soundbag/soundbag.hpp"
 
 TEST( soundbag, xor128 ){
 	std::vector<int32_t> v;

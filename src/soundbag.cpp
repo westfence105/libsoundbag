@@ -8,7 +8,7 @@
 */
 #include <ctime>
 
-#include "soundbag.hpp"
+#include "soundbag/soundbag.hpp"
 
 namespace soundbag {
 	int32_t xor128() { 

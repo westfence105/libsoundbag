@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "bits.hpp"
+#include "soundbag/bits.hpp"
 
 TEST( bits, enc_dec ){
 	int16_t a = 0x0FFF;

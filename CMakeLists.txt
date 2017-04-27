@@ -16,9 +16,7 @@ else()
 	add_library(soundbag STATIC src/soundbag.cpp)
 endif()
 
-file(GLOB HEADERS "src/include/*.hpp")
-
-install(FILES ${HEADERS} DESTINATION include/soundbag)
+install(DIRECTORY src/include/soundbag DESTINATION include)
 
 if(BUILD_TESTS)
 	enable_testing()
