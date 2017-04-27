@@ -1,4 +1,12 @@
 #pragma once
+/*
+	libsoundbag
+
+	Copyright (c) 2017 Togo Nishigaki
+
+	This software released under MIT License
+	http://opensource.org/licenses/mit-license.php
+*/
 
 #ifndef libsoundbag_soundbag_h
 #define libsoundbag_soundbag_h

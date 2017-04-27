@@ -1,3 +1,11 @@
+/*
+	libsoundbag
+
+	Copyright (c) 2017 Togo Nishigaki
+
+	This software released under MIT License
+	http://opensource.org/licenses/mit-license.php
+*/
 #include <ctime>
 
 #include "soundbag.hpp"
