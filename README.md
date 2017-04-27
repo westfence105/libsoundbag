@@ -15,5 +15,9 @@ libsoundbag is some miscellaneous utility library for C++, made for my own use.
 - encodeBytes / decodeBytes function to convert multi-byte variable to std::vector<byte> data with endian
 - readBytes / writeBytes function to read/write multi-byte variable to/from file with endian
 
+#### SDL and OpenGL tools (depends SDL2)
+
+- SDL_GL_MainWindow class (need to link libSDL_GL_Window.a)
+
 ### License
 MIT
