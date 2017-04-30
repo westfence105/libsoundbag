@@ -18,7 +18,7 @@ namespace soundbag {
 	struct Point {
 		T x,y,z;
 
-		inline Point() : Point(0,0,0,0) {}
+		inline Point() : Point(0,0,0) {}
 		inline Point( T _x, T _y, T _z = 0 ){
 			x = _x;
 			y = _y;
