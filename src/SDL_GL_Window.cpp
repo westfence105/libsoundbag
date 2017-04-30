@@ -87,7 +87,7 @@ void SDL_GL_Window::main(){
 			if( handleEvent(event) ){
 				continue;
 			}
-			else if( SDL_QUIT ){
+			else if( enevt.type == SDL_QUIT ){
 				return;
 			}
 			else if( event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED ){
