@@ -84,14 +84,14 @@ void SDL_GL_Window::main(){
 	quit = false;
 	while(!quit){
 		while( SDL_PollEvent(&event) ){
-			if( event.type == SDL_QUIT ){
+			if( handleEvent(event) ){
+				continue;
+			}
+			else if( SDL_QUIT ){
 				return;
 			}
 			else if( event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED ){
 				onResize( event.window.data1, event.window.data2 );
-			}
-			else {
-				handleEvent(event);
 			}
 		}
 		if( quit ){ break; }
