@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "soundbag/soundbag.hpp"
+#include "soundbag/Color.hpp"
 
 TEST( soundbag, xor128 ){
 	std::vector<int32_t> v;
@@ -18,4 +19,11 @@ TEST( soundbag, xor128 ){
 			ASSERT_NE( v[i], v[j] );
 		}
 	}
+}
+
+TEST( soundbag, Color ){
+	soundbag::ColorB cb( 0x80, 0x80, 0x80 );
+	soundbag::ColorF cf = (soundbag::ColorF)cb;
+	std::cerr << cb << std::endl;
+	EXPECT_EQ( cb, (soundbag::ColorB)cf );
 }
