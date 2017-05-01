@@ -87,8 +87,9 @@ void SDL_GL_Window::main(){
 			if( handleEvent(event) ){
 				continue;
 			}
-			else if( enevt.type == SDL_QUIT ){
-				return;
+			else if( event.type == SDL_QUIT ){
+				quit = true;
+				break;
 			}
 			else if( event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED ){
 				onResize( event.window.data1, event.window.data2 );
@@ -112,6 +113,7 @@ bool SDL_GL_Window::handleEvent( const SDL_Event& event ){
 		quit = true;
 		return true;
 	}
+	return false;
 }
 
 int SDL_GL_Window::getWidth() const {
