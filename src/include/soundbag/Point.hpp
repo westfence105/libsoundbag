@@ -8,8 +8,8 @@
 	http://opensource.org/licenses/mit-license.php
 */
 
-#ifndef __sb_Point_h__
-#define __sb_Point_h__
+#ifndef libsoundbag_Point_h
+#define libsoundbag_Point_h
 
 #include <cstdint>
 
@@ -23,6 +23,14 @@ namespace soundbag {
 			x = _x;
 			y = _y;
 			z = _z;
+		}
+
+		inline Point<T> operator+( const Point<T>& b ) const {
+			return Point<T>( x + b.x, y + b.y, z + b.z );
+		}
+
+		inline Point<T> operator-( const Point<T>& b ) const {
+			return Point<T>( x - b.x, y - b.y, z - b.z );
 		}
 	};
 

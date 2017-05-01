@@ -64,12 +64,24 @@ namespace soundbag {
 			return ColorF( (float) r /0xFF, (float) g / 0xFF, (float) b / 0xFF, (float) a / 0xFF );
 		}
 
-		inline operator std::string() const {
+		operator std::string() const {
 			std::ostringstream oss;
 			oss << "#" << std::hex << std::setfill('0') << std::setw(2) 
 			    << r << g << b << a;
 			return oss.str();
 		}
+
+	#ifdef _SDL_H
+		operator SDL_Color() const {
+			SDL_Color ret;
+			ret.r = r;
+			ret.g = g;
+			ret.b = b;
+			ret.a = a;
+			return ret;
+		}
+	#endif
+
 	};
 
 	inline std::ostream& operator<<( std::ostream& os, const ColorB& c ){
