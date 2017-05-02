@@ -43,6 +43,7 @@ namespace soundbag {
 
 		static PointF box_size;
 		static PointF button_size;
+		static PointF msg_pos;
 		static PointF button_ok_pos;
 		static PointF button_cancel_pos;
 		static ColorF box_color;

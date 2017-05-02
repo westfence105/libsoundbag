@@ -33,8 +33,9 @@ TTF_Font* SBGL_Dialog::button_font = NULL;
 
 PointF SBGL_Dialog::box_size ( 420, 200 );
 PointF SBGL_Dialog::button_size( 150, 40 );
-PointF SBGL_Dialog::button_ok_pos ( -100, -50 );
-PointF SBGL_Dialog::button_cancel_pos( 100, -50 );
+PointF SBGL_Dialog::msg_pos ( 0, 30 );
+PointF SBGL_Dialog::button_ok_pos ( -100, -45 );
+PointF SBGL_Dialog::button_cancel_pos( 100, -45 );
 ColorF SBGL_Dialog::box_color ( 1, 1, 1 );
 ColorF SBGL_Dialog::button_color ( 0.5, 0.5, 0.5 );
 ColorF SBGL_Dialog::font_color = ColorF( 0, 0, 0 );
@@ -76,7 +77,7 @@ SBGL_Dialog::SBGL_Dialog( const std::string& msg, const std::string& msg_ok, con
 	t_msg_ok = std::unique_ptr<SBGL_Text>( new SBGL_Text( msg_ok, button_font, button_font_color ) );
 	t_msg_cancel = std::unique_ptr<SBGL_Text>( new SBGL_Text( msg_cancel, button_font, button_font_color ) );
 
-	t_msg->setAlignment( SBGL_Text::SBGL_TEXT_ALIGN_BOTTOM, SBGL_Text::SBGL_TEXT_ALIGN_CENTER );
+	t_msg->setAlignment( SBGL_Text::SBGL_TEXT_ALIGN_CENTER, SBGL_Text::SBGL_TEXT_ALIGN_CENTER );
 }
 
 SBGL_Dialog::~SBGL_Dialog(){
@@ -116,7 +117,11 @@ void SBGL_Dialog::draw() const {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 );
 		glDisableClientState(GL_VERTEX_ARRAY);
 		
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glTranslatef( msg_pos.x, msg_pos.y, 0 );
 		t_msg->draw();
+		glPopMatrix();
 
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
