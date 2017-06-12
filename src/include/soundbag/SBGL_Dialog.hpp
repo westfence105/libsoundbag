@@ -1,8 +1,16 @@
 #pragma once
 #pragma execution_character_set("utf-8")
+/*
+	libsoundbag
 
-#ifndef rise_and_fall_RF_Dialog_h
-#define rise_and_fall_RF_Dialog_h
+	Copyright (c) 2017 Togo Nishigaki
+
+	This software released under MIT License
+	http://opensource.org/licenses/mit-license.php
+*/
+
+#ifndef libsoundbag_SBGL_Dialog_h
+#define libsoundbag_SBGL_Dialog_h
 
 #include <vector>
 #include <memory>
@@ -12,10 +20,9 @@
 #include "soundbag/Point.hpp"
 #include "soundbag/Color.hpp"
 #include "soundbag/Rect.hpp"
+#include "soundbag/SBGL_Text.hpp"
 
 namespace soundbag {
-	class SBGL_Text;
-
 	class SBGL_Dialog {
 		GLuint vbo_box[2];
 

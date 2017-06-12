@@ -8,8 +8,8 @@
 	http://opensource.org/licenses/mit-license.php
 */
 
-#ifndef __sb_SDL_GL_Window__
-#define __sb_SDL_GL_Window__
+#ifndef libsoundbag_SDL_GL_Window_h
+#define libsoundbag_SDL_GL_Window_h
 
 #include <stdexcept>
 

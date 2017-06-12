@@ -8,8 +8,8 @@
 	http://opensource.org/licenses/mit-license.php
 */
 
-#ifndef __sb_Color_h__
-#define __sb_Color_h__
+#ifndef libsounbag_Color_h
+#define libsounbag_Color_h
 
 #include <cstdint>
 #include <iostream>
