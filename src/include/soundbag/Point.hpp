@@ -25,6 +25,19 @@ namespace soundbag {
 			z = _z;
 		}
 
+		inline Point( const Point& b ){
+			x = b.x;
+			y = b.y;
+			z = b.z;
+		}
+
+		template<typename T2>
+		inline Point( const Point<T2>& b ){
+			x = (T)b.x;
+			y = (T)b.y;
+			z = (T)b.z;
+		}
+
 		inline Point<T> operator+( const Point<T>& b ) const {
 			return Point<T>( x + b.x, y + b.y, z + b.z );
 		}
@@ -32,9 +45,12 @@ namespace soundbag {
 		inline Point<T> operator-( const Point<T>& b ) const {
 			return Point<T>( x - b.x, y - b.y, z - b.z );
 		}
+
+		inline bool operator==( const Point<T>& b ) const {
+			return ( x == b.x && y == b.y && z == b.z );
+		}
 	};
 
-	typedef Point<int> Coord;
 	typedef Point<float> PointF;
 }
 

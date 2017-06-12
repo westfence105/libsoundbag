@@ -15,33 +15,63 @@
 #include "Point.hpp"
 
 namespace soundbag {
-	struct RectF {
-		float left, top, right, bottom;
+	template<typename T>
+	struct Rect {
+		T left, top, right, bottom;
 	
-		RectF(){
+		Rect(){
 			left = right = top = bottom = 0;
 		}
 
-		RectF( float _left, float _top, float _right, float _bottom ){
+		Rect( T _left, T _bottom, T _right, T _top ){
 			left   = _left;
 			top    = _top;
 			right  = _right;
 			bottom = _bottom;
 		}
 
-		static inline RectF centered( const PointF& pos, const PointF& size ){
-			return RectF( pos.x - size.x / 2, pos.y + size.y / 2, pos.x + size.x / 2, pos.y - size.y / 2 );
+		Rect( const Rect& b ){
+			left   = b.left;
+			right  = b.right;
+			top    = b.top;
+			bottom = b.bottom;
 		}
 
-		bool hit( float x, float y ) const {
+		template<typename T2>
+		Rect( const Rect<T2>& b ){
+			left   = (T)b.left;
+			right  = (T)b.right;
+			top    = (T)b.top;
+			bottom = (T)b.bottom;
+		}
+
+		static inline Rect centered( const Point<T>& pos, const Point<T>& size ){
+			return Rect( pos.x - size.x / 2, pos.y - size.y / 2, pos.x + size.x / 2, pos.y + size.y / 2 );
+		}
+
+		inline bool operator==( const Rect& b ) const {
+			return ( left == b.left && top == b.top && right == b.right && bottom == b.bottom );
+		}
+
+		inline Rect operator+( const Point<T>& p ) const {
+			return Rect( left + p.x, bottom + p.y, right + p.x, top + p.y );
+		}
+
+		inline Rect operator-( const Point<T>& p ) const {
+			return (*this) + Point<T>( -p.x, -p.y );
+		}
+
+		inline bool hit( T x, T y ) const {
 			return ( smaller( left, right ) <= x && x <= bigger( left, right ) && 
 					 smaller( top, bottom ) <= y && y <= bigger( top, bottom ) );
 		}
 
-		bool hit( const PointF& p ) const {
+		inline bool hit( const PointF& p ) const {
 			return hit( p.x, p.y );
 		}
 	};
+
+	typedef Rect<float> RectF;
 }
 
 #endif
