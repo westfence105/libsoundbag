@@ -30,7 +30,7 @@ namespace soundbag {
 		try_lock( T& m ) : m_mutex(m) {
 			locked = m_mutex.try_lock();
 		}
-		virtual ~try_lock() {
+		~try_lock() {
 			if( locked ){
 				m_mutex.unlock();
 			}
