@@ -12,6 +12,7 @@
 #define libsoundbag_SDL_GL_Window_h
 
 #include <stdexcept>
+#include <mutex>
 
 #include "SDL.h"
 #include "Color.hpp"
@@ -46,12 +47,15 @@ namespace soundbag {
 		};
 
 	private:
-		SDL_Window* window;
-		SDL_GLContext context;
+		SDL_Window* m_window;
+		SDL_GLContext m_context;
 		bool is_fullscreen;
-		int width;
-		int height;
-		ColorF background;
+		int m_width;
+		int m_height;
+		ColorF m_background;
+		uint32_t frame_rate;
+		bool m_quit;
+		mutable std::recursive_mutex m_mutex;
 
 	protected:
 		void onResize( int w, int h );
@@ -61,8 +65,6 @@ namespace soundbag {
 		virtual void prepare();
 		virtual void draw() = 0;
 		virtual void update( uint32_t delta ) = 0;
-		uint32_t frame_rate;
-		bool quit;
 
 	public:
 		SDL_GL_Window( const char* title, const Config* conf ) throw(std::runtime_error);
@@ -70,11 +72,13 @@ namespace soundbag {
 
 		void main();
 
-		int getWidth() const;
-		int getHeight() const;
+		int width() const;
+		int height() const;
 		void resize( int w, int h );
 		void setBackground( const ColorF& c );
 		inline void setBackground( float r, float g, float b, float a = 1 ){ setBackground( ColorF(r,g,b,a) ); }
+		void setFrameRate( uint32_t value );
+		void quit();
 	};
 }
 

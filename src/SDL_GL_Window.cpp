@@ -9,13 +9,15 @@
 #include <GL/gl.h>
 #include "SDL.h"
 
+#include "soundbag/threads.hpp"
 #include "soundbag/SDL_GL_Window.hpp"
 
 using namespace soundbag;
 
 SDL_GL_Window::SDL_GL_Window( const char* title, const SDL_GL_Window::Config* conf ) throw( std::runtime_error )
-	: frame_rate( conf->frame_rate )
 {
+	frame_rate = conf->frame_rate;
+
 	uint32_t flags = SDL_WINDOW_OPENGL;
 
 	if( conf->window_mode == Config::WINDOW_MODE_FULLSCREEN ){
@@ -28,13 +30,13 @@ SDL_GL_Window::SDL_GL_Window( const char* title, const SDL_GL_Window::Config* co
 		flags |= SDL_WINDOW_MINIMIZED;
 	}
 
-	window = SDL_CreateWindow( title, conf->x, conf->y, conf->width, conf->height, flags );
-	if( window == NULL ){
+	m_window = SDL_CreateWindow( title, conf->x, conf->y, conf->width, conf->height, flags );
+	if( m_window == NULL ){
 		throw std::runtime_error("Failed to create window.");
 	}
 
-	context = SDL_GL_CreateContext(window);
-	if( context == NULL ){
+	m_context = SDL_GL_CreateContext(m_window);
+	if( m_context == NULL ){
 		throw std::runtime_error("Failed to create OpenGL context.");
 	}
 
@@ -51,19 +53,21 @@ SDL_GL_Window::SDL_GL_Window( const char* title, const SDL_GL_Window::Config* co
 }
 
 SDL_GL_Window::~SDL_GL_Window(){
-	SDL_DestroyWindow(window);
+	SDL_DestroyWindow(m_window);
 }
 
 void SDL_GL_Window::onResize( int w, int h ){
-	width  = w;
-	height = h;
+	std::unique_lock<std::recursive_mutex> locker(m_mutex);
+	m_width  = w;
+	m_height = h;
 	glViewport( 0, 0, w, h );
 	setProjection();
 }
 
 void SDL_GL_Window::setProjection(){
-	const double w = getWidth();
-	const double h = getHeight();
+	std::unique_lock<std::recursive_mutex> locker(m_mutex);
+	const double w = width();
+	const double h = height();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho( -w/2, w/2, -h/2, h/2, -1.0, 1.0 );
@@ -81,27 +85,35 @@ void SDL_GL_Window::main(){
 	uint32_t tick = SDL_GetTicks();
 	uint32_t next_frame = tick;
 	uint32_t last_frame = tick;
-	quit = false;
-	while(!quit){
+	m_quit = false;
+	while(true){
+		auto locker = soundbag::try_lock<std::recursive_mutex>(m_mutex);
+		if( !locker ){
+			continue;
+		}
+		else if( m_quit ){
+			break;
+		}
+
 		while( SDL_PollEvent(&event) ){
 			if( handleEvent(event) ){
 				continue;
 			}
 			else if( event.type == SDL_QUIT ){
-				quit = true;
+				m_quit = true;
 				break;
 			}
 			else if( event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED ){
 				onResize( event.window.data1, event.window.data2 );
 			}
 		}
-		if( quit ){ break; }
+		if( m_quit ){ break; }
 
 		tick = SDL_GetTicks();
 		if( next_frame <= tick ){
 			update( tick - last_frame ); 
 			draw();
-			SDL_GL_SwapWindow(window);
+			SDL_GL_SwapWindow(m_window);
 			last_frame = tick;
 			next_frame = tick + interval;
 		}
@@ -110,26 +122,40 @@ void SDL_GL_Window::main(){
 
 bool SDL_GL_Window::handleEvent( const SDL_Event& event ){
 	if( event.key.keysym.sym == SDLK_q || event.key.keysym.sym == SDLK_ESCAPE ){
-		quit = true;
+		m_quit = true;
 		return true;
 	}
 	return false;
 }
 
-int SDL_GL_Window::getWidth() const {
-	return width;
+int SDL_GL_Window::width() const {
+	std::unique_lock<std::recursive_mutex> locker(m_mutex);
+	return m_width;
 }
 
-int SDL_GL_Window::getHeight() const {
-	return height;
+int SDL_GL_Window::height() const {
+	std::unique_lock<std::recursive_mutex> locker(m_mutex);
+	return m_height;
 }
 
 void SDL_GL_Window::setBackground( const ColorF& c ){
-	background = c;
+	std::unique_lock<std::recursive_mutex> locker(m_mutex);
+	m_background = c;
 	glClearColor( c.r, c.g, c.b, c.a );
 }
 
 void SDL_GL_Window::resize( int w, int h ){
-	SDL_SetWindowSize( window, w, h );
+	std::unique_lock<std::recursive_mutex> locker(m_mutex);
+	SDL_SetWindowSize( m_window, w, h );
 	onResize( w, h );
+}
+
+void SDL_GL_Window::setFrameRate( uint32_t value ){
+	std::unique_lock<std::recursive_mutex> locker(m_mutex);
+	frame_rate = value;
+}
+
+void SDL_GL_Window::quit(){
+	std::unique_lock<std::recursive_mutex> locker(m_mutex);
+	m_quit = true;
 }
