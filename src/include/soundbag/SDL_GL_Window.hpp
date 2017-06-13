@@ -67,7 +67,7 @@ namespace soundbag {
 		virtual void update( uint32_t delta ) = 0;
 
 	public:
-		SDL_GL_Window( const char* title, const Config& conf ) throw(std::runtime_error);
+		SDL_GL_Window( const std::string& title, const Config& conf ) throw(std::runtime_error);
 		virtual ~SDL_GL_Window();
 
 		void main();

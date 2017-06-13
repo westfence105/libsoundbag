@@ -14,7 +14,7 @@
 
 using namespace soundbag;
 
-SDL_GL_Window::SDL_GL_Window( const char* title, const SDL_GL_Window::Config& conf ) throw( std::runtime_error )
+SDL_GL_Window::SDL_GL_Window( const std::string& title, const SDL_GL_Window::Config& conf ) throw( std::runtime_error )
 {
 	frame_rate = conf.frame_rate;
 
@@ -30,7 +30,7 @@ SDL_GL_Window::SDL_GL_Window( const char* title, const SDL_GL_Window::Config& co
 		flags |= SDL_WINDOW_MINIMIZED;
 	}
 
-	m_window = SDL_CreateWindow( title, conf.x, conf.y, conf.width, conf.height, flags );
+	m_window = SDL_CreateWindow( title.c_str(), conf.x, conf.y, conf.width, conf.height, flags );
 	if( m_window == NULL ){
 		throw std::runtime_error("Failed to create window.");
 	}
