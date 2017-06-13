@@ -14,23 +14,23 @@
 
 using namespace soundbag;
 
-SDL_GL_Window::SDL_GL_Window( const char* title, const SDL_GL_Window::Config* conf ) throw( std::runtime_error )
+SDL_GL_Window::SDL_GL_Window( const char* title, const SDL_GL_Window::Config& conf ) throw( std::runtime_error )
 {
-	frame_rate = conf->frame_rate;
+	frame_rate = conf.frame_rate;
 
 	uint32_t flags = SDL_WINDOW_OPENGL;
 
-	if( conf->window_mode == Config::WINDOW_MODE_FULLSCREEN ){
+	if( conf.window_mode == Config::WINDOW_MODE_FULLSCREEN ){
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
-	else if( conf->window_mode == Config::WINDOW_MODE_MAXIMIZED ){
+	else if( conf.window_mode == Config::WINDOW_MODE_MAXIMIZED ){
 		flags |= SDL_WINDOW_MAXIMIZED;
 	}
-	else if( conf->window_mode == Config::WINDOW_MODE_MINIMIZED ){
+	else if( conf.window_mode == Config::WINDOW_MODE_MINIMIZED ){
 		flags |= SDL_WINDOW_MINIMIZED;
 	}
 
-	m_window = SDL_CreateWindow( title, conf->x, conf->y, conf->width, conf->height, flags );
+	m_window = SDL_CreateWindow( title, conf.x, conf.y, conf.width, conf.height, flags );
 	if( m_window == NULL ){
 		throw std::runtime_error("Failed to create window.");
 	}
@@ -40,9 +40,9 @@ SDL_GL_Window::SDL_GL_Window( const char* title, const SDL_GL_Window::Config* co
 		throw std::runtime_error("Failed to create OpenGL context.");
 	}
 
-	onResize( conf->width, conf->height );
+	onResize( conf.width, conf.height );
 
-	setBackground( conf->background );
+	setBackground( conf.background );
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
