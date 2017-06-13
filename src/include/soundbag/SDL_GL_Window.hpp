@@ -63,8 +63,8 @@ namespace soundbag {
 		virtual bool handleEvent( const SDL_Event& );
 		virtual void setProjection();
 		virtual void prepare();
-		virtual void draw() = 0;
-		virtual void update( uint32_t delta ) = 0;
+		virtual void draw();
+		virtual void update( uint32_t delta );
 
 	public:
 		SDL_GL_Window( const std::string& title, const Config& conf ) throw(std::runtime_error);

@@ -159,3 +159,11 @@ void SDL_GL_Window::quit(){
 	std::unique_lock<std::recursive_mutex> locker(m_mutex);
 	m_quit = true;
 }
+
+void SDL_GL_Window::draw(){
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void SDL_GL_Window::update( uint32_t delta ){
+	
+}
