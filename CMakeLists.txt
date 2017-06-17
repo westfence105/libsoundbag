@@ -28,11 +28,15 @@ endif()
 add_library(soundbag ${LIB_TYPE} src/soundbag.cpp)
 target_include_directories(soundbag PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/include)
 
+if(ENABLE_ZLIB OR NOT DEFINED ENABLE_ZLIB)
+	find_package(ZLIB REQUIRED)
+endif()
+
 if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)
 	find_package(SDL2 REQUIRED)
 	find_package(OpenGL REQUIRED)
 	find_package(GLEW REQUIRED)
-	
+
 	add_library(SDL_GL_Window ${LIB_TYPE} src/SDL_GL_Window.cpp)
 	target_include_directories(SDL_GL_Window PUBLIC ${SDL2_INCLUDE_DIRS} ${OpenGL_INCLUDE_DIRS})
 	target_link_libraries(SDL_GL_Window PUBLIC soundbag ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
@@ -56,19 +60,30 @@ if(BUILD_TESTS OR NOT DEFINED BUILD_TESTS)
 	enable_testing()
 	find_package(GTest REQUIRED)
 	include_directories(${GTEST_INCLUDE_DIRS})
-	
-	foreach( test_name IN ITEMS soundbag bits )
+
+	set(TEST_NAMES soundbag bits)
+	if(ENABLE_ZLIB OR NOT DEFINED ENABLE_ZLIB)
+		set(TEST_NAMES ${TEST_NAMES} zlib)
+	endif()
+	if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)
+		set(TEST_NAMES ${TEST_NAMES} SBGL)
+	endif()
+
+	foreach( test_name IN ITEMS ${TEST_NAMES} )
 		add_executable(${test_name}_test test/${test_name}_test.cpp)
 		add_test(NAME ${test_name} COMMAND $<TARGET_FILE:${test_name}_test>)
 		target_link_libraries(${test_name}_test ${GTEST_BOTH_LIBRARIES})
 		target_include_directories(${test_name}_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/include)
 	endforeach()
-	
+
 	target_link_libraries(soundbag_test soundbag)
 
+	if(ENABLE_ZLIB OR NOT DEFINED ENABLE_ZLIB)
+		target_include_directories(zlib_test PUBLIC ${ZLIB_INCLUDE_DIRS})
+		target_link_libraries(zlib_test soundbag ${ZLIB_LIBRARIES})
+	endif()
+
 	if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)
-		add_executable(SBGL_Test test/SBGL_Test.cpp)
-		add_test(SBGL_Test COMMAND $<TARGET_FILE:SBGL_Test>)
-		target_link_libraries(SBGL_Test soundbag SBGL SDL_GL_Window ${GTEST_BOTH_LIBRARIES})
+		target_link_libraries(SBGL_test soundbag SBGL SDL_GL_Window ${GTEST_BOTH_LIBRARIES})
 	endif()
 endif()
