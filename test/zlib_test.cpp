@@ -18,7 +18,7 @@ TEST( zlib_tool, compress ){
   }
   
   try{
-    zlib_tool::compress( dest, data, 9 );
+    zlib_tool::compress( dest, data.begin(), data.end(), 9 );
   }
   catch( std::exception& e ){
     FAIL() << "Error while compression: " << e.what();
@@ -28,7 +28,7 @@ TEST( zlib_tool, compress ){
 
   std::vector<byte> data2;
   try{
-    zlib_tool::decompress( data2, dest );
+    zlib_tool::decompress( data2, dest.begin(), dest.end() );
   }
   catch( std::exception& e ){
     FAIL() << "Error while decompression: " << e.what();
