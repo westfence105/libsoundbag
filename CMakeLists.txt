@@ -50,7 +50,7 @@ if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)
 endif()
 
 if(NOT SOUNDBAG_NO_INSTALL)
-	install(TARGETS soundbag SDL_GL_Window
+	install(TARGETS soundbag SDL_GL_Window soundbag_zlib
 			RUNTIME DESTINATION bin
 			LIBRARY DESTINATION lib
 			ARCHIVE DESTINATION lib
