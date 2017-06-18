@@ -20,16 +20,24 @@ TEST( bits, enc_dec ){
 	ASSERT_EQ( vb[1], 0xFF );
 
 	int16_t rl = soundbag::decodeBytes<int16_t>( vl, true );
-	ASSERT_EQ( a, rl );
+	EXPECT_EQ( a, rl );
 
 	int16_t rb = soundbag::decodeBytes<int16_t>( vb, false );
-	ASSERT_EQ( a, rb );
+	EXPECT_EQ( a, rb );
 
 	int32_t rl32 = soundbag::decodeBytes<int32_t>( vl, true );
-	ASSERT_EQ( a, rl32 );
+	EXPECT_EQ( a, rl32 );
 
 	int32_t rb32 = soundbag::decodeBytes<int32_t>( vb, false );
-	ASSERT_EQ( a, rb32 );
+	EXPECT_EQ( a, rb32 );
+
+	auto iter_l = vl.cbegin();
+	int32_t rl_i = soundbag::decodeBytes<int16_t>( iter_l, true );
+	EXPECT_EQ( a, rl_i );
+
+	auto iter_b = vb.cbegin();
+	int32_t rb_i = soundbag::decodeBytes<int16_t>( iter_b, false );
+	EXPECT_EQ( a, rb_i );
 }
 
 TEST( bits, read_write ){

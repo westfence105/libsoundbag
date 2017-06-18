@@ -44,6 +44,13 @@ namespace soundbag {
 		}
 		return *(reinterpret_cast<T*>(data.data()));
 	}
+
+	template<typename T>
+	T decodeBytes( std::vector<byte>::const_iterator& iter, bool little_endian = false ){
+		const auto before = iter;
+		iter += sizeof(T);
+		return decodeBytes<T>( std::vector<byte>( before, iter ), little_endian );
+	}
 	
 	template<typename T>
 	std::ostream& writeBytes( std::ostream& os, const T& data, bool little_endian = false ){
