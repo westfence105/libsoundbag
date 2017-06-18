@@ -15,9 +15,6 @@
 #include <stdexcept>
 #include <cstdint>
 #include <vector>
-#include <list>
-
-#include <zlib.h>
 
 typedef uint8_t byte;
 

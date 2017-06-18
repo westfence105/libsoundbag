@@ -1,7 +1,7 @@
 #include <new>
 #include <stdexcept>
 #include <cstdint>
-#include <list>
+#include <deque>
 #include <cassert>
 
 #include "soundbag/zlib_tool.hpp"
@@ -39,7 +39,7 @@ size_t zlib_tool::compress( std::vector<byte>& dest,
 
   auto iter = beg;
   std::vector<byte> out_buf(bufsize);
-  std::list< std::vector<byte> > buf_pool;
+  std::deque< std::vector<byte> > buf_pool;
   size_t size_out = 0;
   int flush = Z_NO_FLUSH;
   int ret = Z_OK;
@@ -114,7 +114,7 @@ size_t zlib_tool::decompress( std::vector<byte>& dest,
 
   auto iter = beg;
   std::vector<byte> out_buf(bufsize);
-  std::list< std::vector<byte> > buf_pool;
+  std::deque< std::vector<byte> > buf_pool;
   size_t size_out = 0;
   int flush = Z_NO_FLUSH;
   int ret = Z_OK;
