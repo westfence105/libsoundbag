@@ -30,6 +30,9 @@ target_include_directories(soundbag PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/inclu
 
 if(ENABLE_ZLIB OR NOT DEFINED ENABLE_ZLIB)
 	find_package(ZLIB REQUIRED)
+	add_library(soundbag_zlib ${LIB_TYPE} src/zlib_tool.cpp)
+	target_include_directories(soundbag_zlib PUBLIC ${ZLIB_INCLUDE_DIRS})
+	target_link_libraries(soundbag_zlib PUBLIC soundbag ${ZLIB_LIBRARIES})
 endif()
 
 if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)
@@ -79,8 +82,7 @@ if(BUILD_TESTS OR NOT DEFINED BUILD_TESTS)
 	target_link_libraries(soundbag_test soundbag)
 
 	if(ENABLE_ZLIB OR NOT DEFINED ENABLE_ZLIB)
-		target_include_directories(zlib_test PUBLIC ${ZLIB_INCLUDE_DIRS})
-		target_link_libraries(zlib_test soundbag ${ZLIB_LIBRARIES})
+		target_link_libraries(zlib_test soundbag_zlib)
 	endif()
 
 	if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)

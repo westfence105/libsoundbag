@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <iterator>
 
 #include "soundbag/soundbag.hpp"
 #include "soundbag/zlib_tool.hpp"
