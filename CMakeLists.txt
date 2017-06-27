@@ -50,12 +50,18 @@ if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)
 endif()
 
 if(NOT SOUNDBAG_NO_INSTALL)
-	install(TARGETS soundbag SDL_GL_Window soundbag_zlib
+	set(INSTALL_TARGETS soundbag SDL_GL_Window soundbag_zlib)
+	if(ENABLE_ZLIB OR NOT DEFINED ENABLE_ZLIB)
+		set(INSTALL_TARGETS ${INSTALL_TARGETS} soundbag_zlib)
+	endif()
+	if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)
+		set(INSTALL_TARGETS ${INSTALL_TARGETS} SBGL)
+	endif()
+	install(TARGETS ${INSTALL_TARGETS}
 			RUNTIME DESTINATION bin
 			LIBRARY DESTINATION lib
 			ARCHIVE DESTINATION lib
 		)
-
 	install(DIRECTORY src/include/soundbag DESTINATION include)
 endif()
 
