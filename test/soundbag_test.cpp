@@ -15,8 +15,8 @@ TEST( soundbag, xor128 ){
 		v.push_back( xor128() );
 	}
 
-	for( int i = 0; i < v.size(); ++i ){
-		for( int j = 0; j < v.size(); ++j ){
+	for( size_t i = 0; i < v.size(); ++i ){
+		for( size_t j = 0; j < v.size(); ++j ){
 			if( i == j ){
 				continue;
 			}
