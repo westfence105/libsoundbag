@@ -13,17 +13,18 @@
 
 using namespace soundbag;
 
-class SBGL_TestWindow : SDL_GL_Window {
+class SBGL_TestWindow : public SDL_GL_Window {
 	std::deque<std::string>& errors;
 
 	std::shared_ptr<SBGL_Object> test_obj;
 
 public:
-	SBGL_TestWindow( std::deque<std::string>& errors );
+	SBGL_TestWindow( std::deque<std::string>& _errors );
 	~SBGL_TestWindow();
 
 	void prepare();
 	void draw();
+	void update( uint32_t delta );
 
 };
 
@@ -66,17 +67,47 @@ TEST( SBGL, nextPow2 ){
 TEST( SBGL, drawing ){
 	std::deque<std::string> errors;
 
-	auto window = std::make_shared<SBGL_TestWindow>()
+	auto window = std::make_shared<SBGL_TestWindow>( errors );
 
 	auto ret = glewInit();
 	if( ret != GLEW_OK ){
-		std::cerr << "GLEW Error: " << glewGetErrorString(ret) << std::endl;
-		return 1;
+		FAIL() << "GLEW Error: " << glewGetErrorString(ret) << std::endl;
 	}
 
 	window->main();
+
+	if( 0 < errors.size() ){
+		std::ostringstream oss;
+		for( const std::string& err : errors ){
+			oss << err << "\n";
+		}
+		FAIL() << oss.str();
+	}
 }
 
-TEST( SBGL, SBGL_Object_instance ){
-	auto obj = std::make_shared<SBGL_Object>();
+SBGL_TestWindow::SBGL_TestWindow( std::deque<std::string>& _errors ) 
+	: SDL_GL_Window( "SBGL_Test", SDL_GL_Window::Config( 800, 600 ) ), 
+		errors(_errors )
+{
+	test_obj = std::make_shared<SBGL_Object>();
+}
+
+SBGL_TestWindow::~SBGL_TestWindow(){
+
+}
+
+void SBGL_TestWindow::prepare(){
+	test_obj->genBuffers();
+}
+
+void SBGL_TestWindow::draw(){
+
+}
+
+void SBGL_TestWindow::update( uint32_t delta ){
+	static uint32_t time = 0;
+	time += delta;
+	if( 30 * 1000 < time ){
+		quit();
+	}
 }
