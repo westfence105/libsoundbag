@@ -45,7 +45,7 @@ if(ENABLE_SBGL OR NOT DEFINED ENABLE_SBGL)
 	target_include_directories(SDL_GL_Window PUBLIC ${SDL2_INCLUDE_DIRS} ${OpenGL_INCLUDE_DIRS})
 	target_link_libraries(SDL_GL_Window PUBLIC soundbag ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
 
-	add_library(SBGL ${LIB_TYPE} src/SBGL_Dialog.cpp src/SBGL_Text.cpp)
+	add_library(SBGL ${LIB_TYPE} src/SBGL_Object.cpp src/SBGL_Dialog.cpp src/SBGL_Text.cpp)
 	target_include_directories(SBGL PUBLIC ${SDL2_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${OpenGL_INCLUDE_DIRS} )
 	target_link_libraries(SBGL PUBLIC soundbag SDL_ttf ${SDL2_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} )
 endif()
