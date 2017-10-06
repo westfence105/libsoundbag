@@ -71,7 +71,7 @@ if(BUILD_TESTS OR NOT DEFINED BUILD_TESTS)
 	find_package(GTest REQUIRED)
 	include_directories(${GTEST_INCLUDE_DIRS})
 
-	set(TEST_NAMES soundbag bits)
+	set(TEST_NAMES soundbag bits utils)
 	if(ENABLE_ZLIB OR NOT DEFINED ENABLE_ZLIB)
 		set(TEST_NAMES ${TEST_NAMES} zlib)
 	endif()
